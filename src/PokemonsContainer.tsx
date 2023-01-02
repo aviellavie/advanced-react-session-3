@@ -17,11 +17,14 @@ export function PokemonsContainer({
   const { isOnline } = useNetworkStatus();
   const forceRerender = useForceRerender();
 
-  let visiblePokemons = pokemons.length
-    ? matchSorter(pokemons, searchTerm, { keys: ["name"] })
-    : [];
 
-  const handlePokemonCaught = (pokemon: Pokemon, caught: boolean) => {
+  const visiblePokemons = React.useMemo(()=>{
+    return pokemons.length
+      ? matchSorter(pokemons, searchTerm, { keys: ["name"] })
+      : [];
+  }, [pokemons, searchTerm])
+
+  const handlePokemonCaught = React.useCallback((pokemon: Pokemon, caught: boolean) => {
     setCaughtPokemons((prev) => {
       if (caught) {
         if (prev.includes(pokemon)) {
@@ -33,7 +36,7 @@ export function PokemonsContainer({
         return prev.filter((item) => item !== pokemon);
       }
     });
-  };
+  },[pokemons]);
 
   return (
     <div>
@@ -44,15 +47,17 @@ export function PokemonsContainer({
         onChangeSearch={setSearchTerm}
         forceRerender={forceRerender}
       />
-      {visiblePokemons.map((pokemon) => (
-        <PokemonItem
+      <>
+      {visiblePokemons.map((pokemon) => {
+        return React.memo(()=> <PokemonItem
           key={pokemon.name}
           pokemon={pokemon}
           onChange={handlePokemonCaught}
           disabled={!isOnline}
           isCaught={caughtPokemons.includes(pokemon)}
-        />
-      ))}
+        />)
+      })}
+      </>
       {!isOnline ? (
         <div
           className="network-status-message"
