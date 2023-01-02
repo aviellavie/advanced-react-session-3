@@ -17,26 +17,28 @@ export function PokemonsContainer({
   const { isOnline } = useNetworkStatus();
   const forceRerender = useForceRerender();
 
-
-  const visiblePokemons = React.useMemo(()=>{
+  const visiblePokemons = React.useMemo(() => {
     return pokemons.length
       ? matchSorter(pokemons, searchTerm, { keys: ["name"] })
       : [];
-  }, [pokemons, searchTerm])
+  }, [pokemons, searchTerm]);
 
-  const handlePokemonCaught = React.useCallback((pokemon: Pokemon, caught: boolean) => {
-    setCaughtPokemons((prev) => {
-      if (caught) {
-        if (prev.includes(pokemon)) {
-          return prev;
+  const handlePokemonCaught = React.useCallback(
+    (pokemon: Pokemon, caught: boolean) => {
+      setCaughtPokemons((prev) => {
+        if (caught) {
+          if (prev.includes(pokemon)) {
+            return prev;
+          }
+
+          return [...prev, pokemon];
+        } else {
+          return prev.filter((item) => item !== pokemon);
         }
-
-        return [...prev, pokemon];
-      } else {
-        return prev.filter((item) => item !== pokemon);
-      }
-    });
-  },[pokemons]);
+      });
+    },
+    [pokemons]
+  );
 
   return (
     <div>
@@ -48,15 +50,17 @@ export function PokemonsContainer({
         forceRerender={forceRerender}
       />
       <>
-      {visiblePokemons.map((pokemon) => {
-        return React.memo(()=> <PokemonItem
-          key={pokemon.name}
-          pokemon={pokemon}
-          onChange={handlePokemonCaught}
-          disabled={!isOnline}
-          isCaught={caughtPokemons.includes(pokemon)}
-        />)
-      })}
+        {visiblePokemons.map((pokemon) => {
+          return (
+            <PokemonItem
+              key={pokemon.name}
+              pokemon={pokemon}
+              onChange={handlePokemonCaught}
+              disabled={!isOnline}
+              isCaught={caughtPokemons.includes(pokemon)}
+            />
+          );
+        })}
       </>
       {!isOnline ? (
         <div

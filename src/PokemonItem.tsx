@@ -1,11 +1,12 @@
 import { Pokemon } from "./types";
-import infoIcon from "./assets/info.svg";
-import { Modal } from "./Modal/Modal";
-import { ModalButton } from "./Modal/ModalButton";
-import { ModalContent } from "./Modal/ModalContent";
-import { PokemonModal } from "./PokemonModal";
+import { memo } from "react";
+// import infoIcon from "./assets/info.svg";
+// import { Modal } from "./Modal/Modal";
+// import { ModalButton } from "./Modal/ModalButton";
+// import { ModalContent } from "./Modal/ModalContent";
+// import { PokemonModal } from "./PokemonModal";
 
-export function PokemonItem({
+export const PokemonItem = memo(function ({
   pokemon,
   onChange,
   isCaught,
@@ -44,4 +45,4 @@ export function PokemonItem({
       </Modal> */}
     </div>
   );
-}
+});
