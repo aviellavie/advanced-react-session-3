@@ -1,10 +1,10 @@
 import { Pokemon } from "./types";
 import { memo } from "react";
-// import infoIcon from "./assets/info.svg";
-// import { Modal } from "./Modal/Modal";
-// import { ModalButton } from "./Modal/ModalButton";
-// import { ModalContent } from "./Modal/ModalContent";
-// import { PokemonModal } from "./PokemonModal";
+import infoIcon from "./assets/info.svg";
+import { Modal } from "./Modal/Modal";
+import { ModalButton } from "./Modal/ModalButton";
+import { ModalContent } from "./Modal/ModalContent";
+import { PokemonModal } from "./PokemonModal";
 
 export const PokemonItem = memo(function ({
   pokemon,
@@ -35,14 +35,14 @@ export const PokemonItem = memo(function ({
           onChange(pokemon, !isCaught);
         }}
       />
-      {/* <Modal>
+      <Modal>
         <ModalButton>
           <img src={infoIcon} style={{ height: 24, width: 24 }} alt="info" />
         </ModalButton>
         <ModalContent>
           <PokemonModal pokemonId={pokemon.name} />
         </ModalContent>
-      </Modal> */}
+      </Modal>
     </div>
   );
 });
